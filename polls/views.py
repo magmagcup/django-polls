@@ -2,6 +2,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import HttpResponse, render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
+from django.views import generic
 
 from .models import Question, Choice
 
@@ -17,11 +18,9 @@ def index(request):
     # }
     #
     # return HttpResponse(template.render(context, request))
-
     newest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'newest_question_list': newest_question_list}
     return render(request, 'polls/index.html', context)
-
 
 def detail(request, question_id):
     # try:
@@ -40,6 +39,7 @@ def result(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
 
+
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -57,3 +57,23 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'newest_question_list'
+
+    def get_queryset(self):
+        """Return the last published questions."""
+        return Question.objects.order_by('-pub_date')
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
