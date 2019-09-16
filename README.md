@@ -20,7 +20,7 @@ Use the following command in your terminal
 
 
 ## **runserver!**
-Go to directory which you clone the repository. 
+Go to directory which you clone the repository to then . 
 
 * >  run this command in terminal: python manage.py runserver
 
