@@ -14,15 +14,22 @@ The application requires
 * Python add-on modules as in [requirements.txt](requirements.txt)
 
 ## Installation
-Use the following command in your terminal
+Use the following command in your cmd.
 > git clone https://github.com/magmagcup/django-polls.git
 
 
 
-## **runserver!**
-Go to directory which you clone the repository to then . 
-
-* >  run this command in terminal: python manage.py runserver
+## runserver
+Go to directory which you clone the repository to then run the command down below in cmd. 
+ >  python manage.py runserver
+ 
+ 
+## Connect to the server!
+ 
+Open your browser then use this url.
+ 
+ > http://localhost:8000/polls/
+ 
 
 
 
