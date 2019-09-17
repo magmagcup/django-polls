@@ -2,7 +2,8 @@
 
 Creator: Sirawich Direkwattanachai
 ## Description
-Web application from the Django Tutorial
+Web application from the Django Tutorial 
+* Three question with various choice
 
 > Use **newest_question_list** instead of **lastest_question_list** in views.py, index.html etc.
 
@@ -15,13 +16,14 @@ The application requires
 
 ## Installation
 Use the following command in your cmd.
+
 > git clone https://github.com/magmagcup/django-polls.git
 
 
-
 ## runserver
-Go to directory which you clone the repository to then run the command down below in cmd. 
- >  python manage.py runserver
+Go to directory which you clone the repository to, then run the command down below in cmd. 
+
+>  python manage.py runserver
  
  
 ## Connect to the server!
