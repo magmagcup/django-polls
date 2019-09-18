@@ -2,7 +2,8 @@
 
 Creator: Sirawich Direkwattanachai
 ## Description
-Web application from the Django Tutorial
+Web application from the Django Tutorial 
+* Three question with various choice
 
 > Use **newest_question_list** instead of **lastest_question_list** in views.py, index.html etc.
 
@@ -20,9 +21,14 @@ Clone git
 * Go into your directory which you clone the file to then run this command to migrate databases
 * > python manage.py migrate 
 
+Use the following command in your cmd.
+
+> git clone https://github.com/magmagcup/django-polls.git
+
 ## runserver
-Go to directory which you clone the repository to then run the command down below in cmd. 
- >  python manage.py runserver
+Go to directory which you clone the repository to, then run the command down below in cmd. 
+
+>  python manage.py runserver
  
  
 ## Connect to the server!
