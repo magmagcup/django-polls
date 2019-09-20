@@ -24,7 +24,7 @@ Install application
 
 * > python manage.py migrate 
 
-Install requirements.txt
+Install require library in requirements.txt
 
 * > pip install -r requirements.txt
 
