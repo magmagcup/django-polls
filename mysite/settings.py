@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import dj_database_url
 import os
 from decouple import config
 import dj_database_url as ab_url
@@ -78,6 +79,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {'default': ab_url.config(default='sqlite:///db.sqlite3')}
+
+# DATABASES = {
+#  'default': config('DATABASE_URL',
+#  cast=dj_database_url.parse)
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
