@@ -1,0 +1,14 @@
+li a {
+    color: lightgreen;
+}
+
+body {
+    font-size: 30px;
+    background: white url("images/background.jpg") no-repeat;
+    color: lightblue;
+}
+
+div {
+    color: lightpurple;
+    opacity : 0.5
+}

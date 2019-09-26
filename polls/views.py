@@ -9,6 +9,8 @@ from .models import Question, Choice
 
 
 def index(request):
+    # redirect user to the polls index
+    return HttpResponseRedirect(reverse('polls:index'))
     # newest_question_list = Question.objects.order_by('-pub_date')[:5]
     # output = ', '.join([q.question_text for q in newest_question_list])
     # return HttpResponse(output)
@@ -19,9 +21,9 @@ def index(request):
     # }
     #
     # return HttpResponse(template.render(context, request))
-    newest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'newest_question_list': newest_question_list}
-    return render(request, 'polls/index.html', context)
+    # newest_question_list = Question.objects.order_by('-pub_date')[:5]
+    # context = {'newest_question_list': newest_question_list}
+    # return render(request, 'polls/index.html', context)
 
 def detail(request, question_id):
     # try:
@@ -70,9 +72,11 @@ class IndexView(generic.ListView):
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')
 
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+
     def get_queryset(self):
         """
         Excludes any questions that aren't published yet.
