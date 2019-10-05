@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 import polls.views as views
+from django.conf.urls import handler404
+
+
+handler404 = 'polls.views.page404'
 
 urlpatterns = [
     path('polls/', include('polls.urls')),

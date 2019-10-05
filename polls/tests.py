@@ -51,6 +51,15 @@ def create_question(question_text, days):
 
 
 class QuestionIndexViewTests(TestCase):
+    def test_response(self):
+        """
+        Test page response
+        :param self:
+        :return:
+        """
+        response = self.client.get(reverse('polls:index'))
+        self.assertTemplateUsed(response, 'polls/index.html')
+
     def test_no_questions(self):
         """
         If no questions exist, an appropriate message is displayed.
@@ -117,7 +126,7 @@ class QuestionDetailViewTests(TestCase):
         future_question = create_question(question_text='Future question.', days=5)
         url = reverse('polls:detail', args=(future_question.id,))
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
 
     def test_past_question(self):
         """

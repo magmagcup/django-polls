@@ -4,6 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib import messages
 
 from .models import Question, Choice
 
@@ -49,6 +50,7 @@ def vote(request, question_id):
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
+        messages.error(request, f"You didn't make a choice")
         return render(request, 'polls/detail.html', {
             'question': question,
             'error_message': "You didn't select a choice.",
@@ -59,6 +61,7 @@ def vote(request, question_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
+        messages.success(request, "Your choice successfully recorded. Thank you.")
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 
@@ -84,7 +87,10 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
 
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
+# class ResultsView(generic.DetailView):
+#     model = Question
+#     template_name = 'polls/results.html'
 
+
+def page404(request, exception):
+    return render(request, 'polls/404.html')

@@ -1,14 +1,18 @@
-li a {
+li {
     color: lightgreen;
 }
 
 body {
     font-size: 30px;
-    background: white url("images/background.jpg") no-repeat;
-    color: lightblue;
+    background-color: #d7eff0;
+    color: #7DAADO;
 }
 
-div {
-    color: lightpurple;
-    opacity : 0.5
+h1 {
+    background-color: #ffe700 !important;
 }
+
+table, th, td {
+  border: 1px solid black;
+}
+

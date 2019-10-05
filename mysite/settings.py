@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY', default="secret")
 DEBUG = config('DEBUG', cast=bool, default=False)
 
 #Original
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 

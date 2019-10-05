@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 
 class Question(models.Model):
@@ -15,6 +16,9 @@ class Question(models.Model):
         """
         now = timezone.now()
         return now >= self.pub_date >= now - datetime.timedelta(days=1)
+
+    def order(self):
+        return self.choice_set.all().order_by('votes')
 
     def __str__(self):
         return self.question_text

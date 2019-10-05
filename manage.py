@@ -3,6 +3,14 @@
 import os
 import sys
 
+from django.core.management import call_command
+
+fixture = 'init'
+
+
+def load_data(apps, schema_editor):
+    call_command("loaddata", fixture, app_label="polls")
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')

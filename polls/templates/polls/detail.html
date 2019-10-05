@@ -1,7 +1,6 @@
-{% load static %}
+{% extends "polls/base.html" %}
 
-<link rel = "stylesheet" type = "text/css" href="{% static 'polls/style.css' %}">
-
+{% block content %}
 
 <h1>{{question.question_text}}</h1>
 
@@ -9,12 +8,19 @@
 
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
+    <table class = 'table table-primary'>
 {% for choice in question.choice_set.all %}
+        <tr>
+            <th>
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-{% endfor %}
-<input type="submit" value="Vote">
+            </th>
+            {% endfor %}
+        </tr>
+        </table>
+<input type="submit" class="btn btn-primary" value="Vote">
 </form>
 
 
 <li><a href = "{% url 'polls:index' %}">Back to index</a></li>
+{% endblock %}

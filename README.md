@@ -11,7 +11,7 @@ Web application from the Django Tutorial
 
 The application requires
 * Python 3.6 or newer
-* Django 2.1.2 or newer
+* Django 2.2 or newer
 * Python add-on modules as in [requirements.txt](requirements.txt)
 
 ## Installation
