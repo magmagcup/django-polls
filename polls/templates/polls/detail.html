@@ -13,14 +13,21 @@
         <tr>
             <th>
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
             </th>
             {% endfor %}
         </tr>
         </table>
+        <br/>
+{% if user.is_authenticated %}
 <input type="submit" class="btn btn-primary" value="Vote">
+{% else %}
+Please <a href="{% url 'login' %}?next={{request.path}}">login</a> to vote.
+    {% endif %}
 </form>
 
 
 <li><a href = "{% url 'polls:index' %}">Back to index</a></li>
+<li><a href = "{% url 'polls:results' question.id %}">Result for {{question.question_text}}</a></li>
+
 {% endblock %}

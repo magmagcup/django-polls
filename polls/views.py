@@ -1,12 +1,16 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import HttpResponse, render, get_object_or_404
-from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
 
-from .models import Question, Choice
+
+from .models import Question, Choice, Vote
 
 
 def index(request):
@@ -26,6 +30,7 @@ def index(request):
     # context = {'newest_question_list': newest_question_list}
     # return render(request, 'polls/index.html', context)
 
+
 def detail(request, question_id):
     # try:
     #     question = Question.objects.get(pk=question_id)
@@ -44,6 +49,7 @@ def result(request, question_id):
     return render(request, 'polls/results.html', {'question': question})
 
 
+@login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -58,11 +64,46 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        if already_vote(request.user, question):
+            user_vote = Vote.objects.filter(user=request.user, vote_question=question)[0]
+            user_vote.change_vote(selected_choice)
+            user_vote.save()
+        else:
+            new_v = Vote(vote_question=question, choice=selected_choice, user=request.user)
+            new_v.save()
+
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        messages.success(request, "Your choice successfully recorded. Thank you.")
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    messages.success(request, "Your choice successfully recorded. Thank you.")
+    return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+def same_question(request_user,question_user,choice_user):
+    user_vote = Vote.objects.filter(user=request_user, vote_question=question_user)
+    if user_vote:
+        return True
+    return False
+
+
+def already_vote(request_user,question_user):
+    user_vote = Vote.objects.filter(user=request_user, vote_question=question_user)
+    if user_vote.count():
+        return True
+    else:
+        return False
+
+
+def signup(request):
+    """Register a new user."""
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get('password')
+            user = authenticate(username=username,raw_password = raw_password)
+            login(request, user)
 
 
 class IndexView(generic.ListView):
