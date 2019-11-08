@@ -5,7 +5,10 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import permission_required
 
 from .models import Question, Choice
 
@@ -26,6 +29,7 @@ def index(request):
     # newest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'newest_question_list': newest_question_list}
     # return render(request, 'polls/index.html', context)
+
 
 def detail(request, question_id):
     # try:
@@ -65,6 +69,18 @@ def vote(request, question_id):
         # user hits the Back button.
         messages.success(request, "Your choice successfully recorded. Thank you.")
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+def signup(request):
+    """Register a new user."""
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get('password')
+            user = authenticate(username=username,raw_password = raw_password)
+            login(request, user)
 
 
 class IndexView(generic.ListView):
