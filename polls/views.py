@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import permission_required
 
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 
 
 def index(request):
@@ -63,12 +63,21 @@ def vote(request, question_id):
         })
     else:
         selected_choice.votes += 1
+        if already_vote(request.user,question,selected_choice):
+            pass
+        else:
+            new_v = Vote(vote_question=question, choice=selected_choice, user=request.user)
+            new_v.save()
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         messages.success(request, "Your choice successfully recorded. Thank you.")
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+def already_vote(request_user,question_user,choice_user):
+    user_vote = Vote.objects.get(user=request_user, choice=choice_user, vote_question=question_user)
 
 
 def signup(request):
