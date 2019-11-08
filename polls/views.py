@@ -1,6 +1,5 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import HttpResponse, render, get_object_or_404
-from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -8,7 +7,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import permission_required
+from django.db import transaction
+
 
 from .models import Question, Choice, Vote
 
@@ -63,21 +63,35 @@ def vote(request, question_id):
         })
     else:
         selected_choice.votes += 1
-        if already_vote(request.user,question,selected_choice):
-            pass
+        selected_choice.save()
+        if already_vote(request.user, question):
+            user_vote = Vote.objects.filter(user=request.user, vote_question=question)[0]
+            user_vote.change_vote(selected_choice)
+            user_vote.save()
         else:
             new_v = Vote(vote_question=question, choice=selected_choice, user=request.user)
             new_v.save()
-        selected_choice.save()
+
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        messages.success(request, "Your choice successfully recorded. Thank you.")
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    messages.success(request, "Your choice successfully recorded. Thank you.")
+    return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 
-def already_vote(request_user,question_user,choice_user):
-    user_vote = Vote.objects.get(user=request_user, choice=choice_user, vote_question=question_user)
+def same_question(request_user,question_user,choice_user):
+    user_vote = Vote.objects.filter(user=request_user, vote_question=question_user)
+    if user_vote:
+        return True
+    return False
+
+
+def already_vote(request_user,question_user):
+    user_vote = Vote.objects.filter(user=request_user, vote_question=question_user)
+    if user_vote.count():
+        return True
+    else:
+        return False
 
 
 def signup(request):

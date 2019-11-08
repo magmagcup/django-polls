@@ -40,4 +40,9 @@ class Vote(models.Model):
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
+    def change_vote(self, new_choice):
+        for each_choice in [self.choice]:
+            each_choice.votes -= 1
+            each_choice.save()
+        self.choice = new_choice
+        self.save()
