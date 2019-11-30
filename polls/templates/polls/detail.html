@@ -12,8 +12,10 @@
 {% for choice in question.choice_set.all %}
         <tr>
             <th>
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
+                {% if user.is_authenticated %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
+                {% endif %}
             </th>
             {% endfor %}
         </tr>

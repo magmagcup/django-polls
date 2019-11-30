@@ -39,9 +39,9 @@ def detail(request, question_id):
     # return render(request, 'polls/detail.html', {'question': question})
 
     # return HttpResponse(f"You're looking at question {question_id}.")
-
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/detail.html', {'question': question})
+    user_vote = Vote.objects.filter(user=request.user,vote_question=question)
+    return render(request, 'polls/detail.html', {'question': question, 'u_vote': user_vote})
 
 
 def result(request, question_id):
@@ -67,7 +67,6 @@ def vote(request, question_id):
         if already_vote(request.user, question):
             user_vote = Vote.objects.filter(user=request.user, vote_question=question)[0]
             user_vote.change_vote(selected_choice)
-            user_vote.save()
         else:
             new_v = Vote(vote_question=question, choice=selected_choice, user=request.user)
             new_v.save()
