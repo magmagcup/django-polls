@@ -48,7 +48,7 @@ class FunctionTest(StaticLiveServerTestCase):
 
     def test_hyperlink(self):
         self.web.get('%s' % self.live_server_url)
-        self.web.element_by_link_text('login').click()
+        self.web.find_element_by_link_text('login').click()
         self.assertEqual(self.web.getCurrentUrl(), '%s%s' % (self.live_server_url, 'login/'))
 
     def test_first_choice(self):
