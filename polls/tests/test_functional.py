@@ -35,10 +35,7 @@ class FunctionTest(StaticLiveServerTestCase):
         super().setUp()
         self.web = FunctionTest.browser
 
-    def test_open_website(self):
-        url = "localhost:8000"
-
-        self.web.get(url)
+    def test_find_h1(self):
+        self.web.get('%s' % self.live_server_url)
         text_with_h1 = self.web.find_element_by_tag_name('h1')
         self.assertEqual(text_with_h1.text, "This is homepage")
-
