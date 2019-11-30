@@ -3,6 +3,7 @@ from typing import List
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common.exceptions import WebDriverException
 from polls.views import *
+from polls.models import Question
 import requests
 
 from django.test import LiveServerTestCase
@@ -39,3 +40,16 @@ class FunctionTest(StaticLiveServerTestCase):
         self.web.get('%s' % self.live_server_url)
         text_with_h1 = self.web.find_element_by_tag_name('h1')
         self.assertEqual(text_with_h1.text, "This is homepage")
+
+    def test_find_question(self):
+        self.web.get('%s' % self.live_server_url)
+        text_question = self.web.find_element_by_tag_name('p')
+        self.assertEqual(text_question.text, "No polls are available.")
+
+    def test_hyperlink(self):
+        self.web.get('%s' % self.live_server_url)
+        self.web.element_by_link_text('login').click()
+        self.assertEqual(self.web.getCurrentUrl(), '%s%s' % (self.live_server_url, 'login/'))
+
+    def test_first_choice(self):
+        pass
