@@ -12,10 +12,12 @@
 {% for choice in question.choice_set.all %}
         <tr>
             <th>
+
                 {% if user.is_authenticated %}
                 <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                 <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
                 {% endif %}
+
             </th>
             {% endfor %}
         </tr>
@@ -23,6 +25,7 @@
         <br/>
 {% if user.is_authenticated %}
 <input type="submit" id="submit_button" class="btn btn-primary" value="Vote">
+
 {% else %}
 Please <a href="{% url 'login' %}?next={{request.path}}">login</a> to vote.
     {% endif %}

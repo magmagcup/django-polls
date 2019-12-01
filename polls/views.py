@@ -67,6 +67,7 @@ def vote(request, question_id):
         if already_vote(request.user, question):
             user_vote = Vote.objects.filter(user=request.user, vote_question=question)[0]
             user_vote.change_vote(selected_choice)
+
         else:
             new_v = Vote(vote_question=question, choice=selected_choice, user=request.user)
             new_v.save()
