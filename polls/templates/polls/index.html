@@ -6,7 +6,7 @@
 {% if newest_question_list %}
     <ul>
     {% for question in newest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}"> {{question.question_text}}</a></li>
+        <li><a id="question{{ forloop.counter }}" href="{% url 'polls:detail' question.id %}"> {{question.question_text}}</a></li>
 
     {% endfor %}
     </ul>
